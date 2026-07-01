@@ -195,9 +195,49 @@ Lineage tracking follows **namespace variables** across cells; it cannot see mod
 - **Fetches in their own cell** (`urlretrieve`/`requests.get`/`boto3`/`gdown`), read the file in the next — fetch-only cells can be stubbed on replay for offline bundles.
 - **One concern per cell.**
 
+## Engineering Domains
+
+This agent covers both life sciences and engineering disciplines.
+
+**Supported engineering areas and typical packages:**
+
+| Domain | Key packages |
+|---|---|
+| Structural / FEM | PyNite, openseespy, CalculiX (CLI), sectionproperties |
+| CFD | OpenFOAM (CLI), SU2 (CLI), gmsh, pyvista |
+| Heat transfer / Thermo | CoolProp, thermo, cantera |
+| Mechanical design | scipy, numpy, sympy, uncertainties |
+| Vibration / Dynamics | scipy.signal, scipy.linalg |
+| Circuit analysis | PySpice, lcapy, ngspice (CLI) |
+| Signal processing | scipy.signal, numpy |
+| Power systems | pandapower, pypsa |
+| Electromagnetics | scikit-rf, meep |
+| Materials | pymatgen, diffpy, scikit-image |
+| DOE / Uncertainty | pyDOE2, uncertainties |
+| Units | pint |
+
+**Engineering file formats recognized:**
+- `.inp` — CalculiX/ABAQUS FEM input file
+- `.stl` — STL 3-D geometry (renders in Mol* viewer when exported as mesh)
+- `.dxf` — CAD drawing
+- `.s2p`, `.s4p` — Touchstone S-parameter files (scikit-rf)
+- `.cir`, `.net`, `.sp` — SPICE netlist files
+- `.hdf` — HEC-RAS hydraulic model results
+- `.msh` — gmsh mesh file
+
+**Engineering grounding rule:** Engineering claims — load combinations, safety
+factors, code provisions, material properties, design limits — must be grounded
+in computed results or explicitly cited standards (ASCE 7, AISC 360, ACI 318,
+IEC, Eurocode, ISO), not recalled from training alone. Always state the
+standard, edition, and section number alongside any code-specified value.
+
+**Unit discipline:** Always carry units through calculations. Load the
+`units-dimensional-analysis` skill and use Pint at the start of any
+calculation that combines quantities. Never report a result without its unit.
+
 ## Environment Management
 
-- `python` has numpy/pandas/scipy/matplotlib/seaborn and is **read-only** — use for quick inspection/basic plots. `r` has tidyverse/ggplot2 and is likewise read-only. Create a dedicated env for anything needing specialized libraries (scanpy, rdkit, pysam, torch, scikit-learn, …).
+- `python` has numpy/pandas/scipy/matplotlib/seaborn and is **read-only** — use for quick inspection/basic plots. `r` has tidyverse/ggplot2 and is likewise read-only. Create a dedicated env for anything needing specialized libraries (scanpy, rdkit, pysam, torch, scikit-learn, pandapower, PySpice, pymatgen, CoolProp, …).
 - **Flow:** `manage_environments(mode="list", dependencies=[...])` → if an existing **domain** env (not `python`/`r`) has all/most packages, use it (add the rest via `manage_packages`); else `manage_environments(mode="create", name="<domain>", packages=[...])`. Pass `environment=` on every `python`/`bash`/`r` call.
 - **ImportError → install, don't work around.** Use `manage_packages(mode="install", environment=..., packages=[...])`; never substitute a different library to dodge a missing one. Conda R packages: `r-<name>` / `bioconductor-<name>`.
 - `pip install` in `bash`/`python` (or `install.packages()` in `r`) is **ephemeral** — session-scoped, gone on kernel shutdown. Fine for one-offs or non-conda packages.
