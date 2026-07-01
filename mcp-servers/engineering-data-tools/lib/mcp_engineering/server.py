@@ -153,10 +153,10 @@ def get_materials_project_properties(args: dict) -> str:
             "error": "MP_API_KEY not set",
             "message": (
                 "Set the MP_API_KEY environment variable with your Materials "
-                "Project API key from https://materialsproject.org/api"
+                "Project API key from https://next-gen.materialsproject.org/api"
             )
         })
-    # Materials Project v2 REST API
+    # Materials Project next-gen REST API
     url = (f"https://api.materialsproject.org/materials/summary/"
            f"?formula={urllib.parse.quote(formula)}&fields="
            "material_id,formula_pretty,symmetry,energy_per_atom,"

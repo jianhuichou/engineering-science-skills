@@ -59,7 +59,7 @@ CONVERSIONS = {
     "energy":        {"J": 1, "kJ": 1e-3, "MJ": 1e-6, "kWh": 1/3.6e6,
                       "BTU": 1/1055.06, "cal": 1/4.184},
     "power":         {"W": 1, "kW": 1e-3, "MW": 1e-6, "hp": 1/745.7},
-    "temperature":   {"K": "base", "C": "K - 273.15", "F": "K * 9/5 - 459.67"},
+    "temperature":   {"K": "base", "C": "K - 273.15", "F": "(K - 273.15) * 9/5 + 32"},
     "mass_flow":     {"kg/s": 1, "kg/h": 3600, "t/h": 3.6, "lb/s": 1/0.453592},
     "dynamic_visc":  {"Pa*s": 1, "mPa*s": 1e3, "cP": 1e3},
 }

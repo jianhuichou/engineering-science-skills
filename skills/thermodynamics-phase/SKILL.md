@@ -160,7 +160,7 @@ def psychrometric_props(T_dry_K, phi_relative_humidity, P_Pa=101325):
     P_sat = CP.PropsSI("P", "T", T_dry_K, "Q", 0, "Water")
     P_v = phi * P_sat                  # partial pressure of vapour
     P_a = P_Pa - P_v                   # partial pressure of dry air
-    W = 0.6222 * P_v / P_a            # humidity ratio (kg water/kg dry air)
+    W = 0.622 * P_v / P_a             # humidity ratio (kg water/kg dry air)
     h = 1.006 * (T_dry_K - 273.15) + W * (2501 + 1.86 * (T_dry_K - 273.15))  # kJ/kg
     T_dp = CP.PropsSI("T", "P", P_v, "Q", 0, "Water")   # dew point (K)
     return {"W_kg_kg": W, "h_kJ_kg": h, "T_dp_K": T_dp}
